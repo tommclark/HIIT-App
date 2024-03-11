@@ -10,7 +10,7 @@ function getExercises(req, res) {
 }
 
 function postMessages(req, res) {
-    exercises.push(req.body.msg);
+    exercises.push(req.body);
     res.json(exercises);
 
 }

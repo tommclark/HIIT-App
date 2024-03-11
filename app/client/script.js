@@ -2,6 +2,9 @@ let startBtn = document.querySelector("#start");
 let saveBtn = document.querySelector("#save");
 let resetBtn = document.querySelector("#reset");
 let clearBtn = document.querySelector("#clear");
+let addBtn = document.querySelector("#add");
+
+let exerciseInput = document.querySelector(".exercisepopup");
 
 let exerciseList = document.querySelector('#exerciselist');
 let exercises = [];
@@ -31,10 +34,10 @@ resetBtn.addEventListener('click', function () {
     second = 0;
     ms = 0;
 
-    document.querySelector('#hr').innerHTML = "00";
-    document.querySelector('#min').innerHTML = "00";
-    document.querySelector('#sec').innerHTML = "00";
-    document.querySelector('#ms').innerHTML = "00";
+    document.querySelector('#hr').textContent = "00";
+    document.querySelector('#min').textContent = "00";
+    document.querySelector('#sec').textContent = "00";
+    document.querySelector('#ms').textContent = "00";
 });
 
 
@@ -60,6 +63,10 @@ clearBtn.addEventListener('click', async function clearExercises() {
 
 saveBtn.addEventListener('click', saveTime);
 
+addBtn.addEventListener('click', function () {
+    exerciseInput.style.display = "block";
+});
+
 
 async function saveTime() {
     console.log(exerciseList);
@@ -72,9 +79,10 @@ async function saveTime() {
     };
     let currentTimeString = JSON.stringify(currentTime);
 
+    let exerciseName = document.querySelector('#exercise').value;
 
-    const payload = { msg: currentTimeString };
-    console.log('Payload', currentTimeString);
+    const payload = { name: exerciseName, msg: currentTimeString };
+    console.log('Payload', currentTimeString, exerciseName);
 
     const response = await fetch('exercises', {
         method: 'POST',
@@ -102,7 +110,7 @@ async function saveTime() {
 function showExercises(exercises, where) {
     for (const exercise of exercises) {
         const li = document.createElement('li');
-        li.textContent = exercise;
+        li.textContent = `${exercise.name}: ${exercise.msg}`;
         where.append(li);
     }
 }
@@ -114,36 +122,11 @@ async function loadExercises() {
     if (response.ok) {
         exercises = await response.json();
     } else {
-        exercises = ['failed to load exercises :-('];
+        exercises = ['failed to load exercises'];
     }
 
     showExercises(exercises, exerciseList);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -191,10 +174,10 @@ function timer() {
             msString = "0" + msString;
         }
 
-        document.querySelector('#hr').innerHTML = hrString;
-        document.querySelector('#min').innerHTML = minString;
-        document.querySelector('#sec').innerHTML = secString;
-        document.querySelector('#ms').innerHTML = msString;
+        document.querySelector('#hr').textContent = hrString;
+        document.querySelector('#min').textContent = minString;
+        document.querySelector('#sec').textContent = secString;
+        document.querySelector('#ms').textContent = msString;
 
 
         setTimeout(function () { timer(); }, 1);

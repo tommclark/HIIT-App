@@ -1,3 +1,17 @@
 h1 {
     font-size: 2em;
 }
+
+.top {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#exercises {
+    margin-left: 1em ;
+}
+
+.exercisepopup {
+    display: none;
+}
+
