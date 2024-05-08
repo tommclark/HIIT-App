@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exercise</title>
+</head>
+
+<body>
+    <h1>Create & View Exercise</h1>
+    <form id="exerciseForm">
+        <label for="exercises">Choose an exercise:</label>
+        <select id="exercisesDropdown" name="exercises"></select>
+    </form>
+
+
+    
+    <section id="myExercises">
+        <h1>My Exercises</h1>
+        <ul id="exerciseList">
+        </ul>
+    </section>
+
+    <h1>Create Custom Exercise</h1>
+    <form id="customExerciseForm">
+        <label for="exerciseName">Exercise Name:</label>
+        <input type="text" id="exerciseName" name="exerciseName">
+        <label for="exerciseDuration">Exercise Duration (Minutes):</label>
+        <input type="number" id="exerciseDurationMinutes" name="exerciseDurationMinutes" min="0">
+        <label for="exerciseDurationSeconds">Exercise Duration (Seconds):</label>
+        <input type="number" id="exerciseDurationSeconds" name="exerciseDurationSeconds" min="0" max="59">
+        <label for="exerciseRestPeriodMinutes">Rest Period (Minutes):</label>
+        <input type="number" id="exerciseRestPeriodMinutes" name="exerciseRestPeriodMinutes" min="0">
+        <label for="exerciseRestPeriodSeconds">Rest Period (Seconds):</label>
+        <input type="number" id="exerciseRestPeriodSeconds" name="exerciseRestPeriodSeconds" min="0" max="59">
+        <label for="exerciseReps">Reps:</label>
+        <input type="number" id="exerciseReps" name="exerciseReps" min="0">
+        <label for="exerciseDescription">Exercise Description:</label>
+        <input type="text" id="exerciseDescription" name="exerciseDescription">
+        <button type="submit" id="customExerciseSubmit">Create Exercise</button>
+    </form>
+    <script src="create.js"></script>
+</body>
+
+</html>

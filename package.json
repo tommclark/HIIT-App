@@ -4,12 +4,35 @@
 
   "dependencies": {
 
-    "express": "^4.18.3"
+    "express": "^4.18.3",
+
+    "sqlite": "^5.1.1",
+
+    "sqlite3": "^5.1.7"
+
+  },
+
+  "devDependencies": {
+
+    "eslint": "^7.21.0",
+    "eslint-config-portsoc": "^0.8.1"
 
   },
 
   "scripts": {
-    "start": "cd app && node svr.js"
+
+    "start": "node svr.js",
+    "test": "eslint *.js"
+
+  },
+
+  "eslintConfig": {
+    "extends": "portsoc",
+    "root": true,
+    "env": {
+      "browser": true
+    }
   }
+
 }
 
