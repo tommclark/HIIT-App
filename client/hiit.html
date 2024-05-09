@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <div class="topnav">
-        <a href="#index.html">Home</a>
+    <div class="navbar">
+        <a href="index.html">Home</a>
         <a class="active" href="hiit.html">Exercise</a>
         <a href="create.html">Create</a>
         <a href="myWorkouts.html">Saved</a>
@@ -26,9 +26,9 @@
             <h1>Timer</h1>
             <h2 id="currentlySelected">Currently Selected Exercise: </h2>
             <div id="time">
-                <span class="digit" id="hr">
-                    00</span>
-                <span class="txt">Hr</span>
+                <div id="progressBarContainer" style="width: 100%; background-color: #f3f3f3;">
+                    <div id="progressBar"></div>
+                  </div>
                 <span class="digit" id="min">
                     00</span>
                 <span class="txt">Min</span>
