@@ -10,13 +10,16 @@ const exerciseInput = document.querySelector('.exercisepopup');
 
 const exerciseList = document.querySelector('#exerciselist');
 let exercises = [];
-
+let currentlySelectedExercise = exercises[0];
 let timerStatus = false;
 
 let hour = 0o0;
 let minute = 0o0;
 let second = 0o0;
 let ms = 0o0;
+
+startBtn.disabled = true;
+
 
 startBtn.addEventListener('click', function () {
   if (timerStatus) {
@@ -38,6 +41,9 @@ resetBtn.addEventListener('click', function () {
   document.querySelector('#min').textContent = '00';
   document.querySelector('#sec').textContent = '00';
   document.querySelector('#ms').textContent = '00';
+
+  startBtn.disabled = true;
+  document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ';
 });
 
 
@@ -47,57 +53,61 @@ clearBtn.addEventListener('click', async function clearExercises() {
   });
 
   if (response.ok) {
-    exercises = await response.json();
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      exercises = await response.json();
+    }
     while (exerciseList.hasChildNodes()) {
       exerciseList.removeChild(exerciseList.firstChild);
     }
   } else {
     console.log('failed to clear exercises', response);
   }
+  document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ';
 });
 
 
-saveBtn.addEventListener('click', saveTime);
+saveBtn.addEventListener('click', saveExercise);
 
 addBtn.addEventListener('click', function () {
   exerciseInput.style.display = 'block';
 });
 
 // TODO: create new database called past workouts, and make this save button save the currently loaded workout to the database. Add a new page that displays past workouts.
-async function saveTime() {
-  console.log(exerciseList);
+function saveExercise() {
+  // Find the selected exercise object from the array
+  // const exercise = exercises.find(exercise => exercise.name === selectedExercise);
+  const exercise = currentlySelectedExercise;
 
-  const currentTime = {
-    hour: hour,
-    minute: minute,
-    second: second,
-    ms: ms,
-  };
-  const currentTimeString = JSON.stringify(currentTime);
+  const timeRemaining = hour * 3600 + minute * 60 + second;
 
-  const exerciseName = document.querySelector('#exercise').value;
-
-  const payload = { name: exerciseName, msg: currentTimeString };
-  console.log('Payload', currentTimeString, exerciseName);
-
-  const response = await fetch('exercises', {
+  fetch('/pastExercises', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (response.ok) {
-    const updatedExercises = await response.json();
-    console.log(updatedExercises);
-    console.log(exerciseList);
-    while (exerciseList.hasChildNodes()) {
-      exerciseList.removeChild(exerciseList.firstChild);
-    }
-
-    showExercises(updatedExercises, exerciseList);
-  } else {
-    console.log('failed to send message', response);
-  }
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      name: exercise.name,
+      durationSecs: exercise.durationSecs,
+      timeRemaining: timeRemaining,
+      restPeriodSecs: exercise.restPeriodSecs,
+      reps: exercise.reps,
+    }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Handle successful response if needed
+      console.log('Exercise saved:', data);
+    })
+    .catch(error => {
+      // Handle error
+      console.error('There was a problem with your fetch operation:', error);
+    });
 }
 
 
@@ -105,8 +115,13 @@ function showExercises(exercises, where) {
   for (const exercise of exercises) {
     const li = document.createElement('li');
 
+
     const mins = Math.floor(exercise.durationSecs / 60);
     const secs = exercise.durationSecs % 60;
+
+    const totalDurationSecs = exercise.durationSecs * exercise.reps;
+    const totalMins = Math.floor(totalDurationSecs / 60);
+    const totalSecs = totalDurationSecs % 60;
 
     // Calculate minutes and seconds for rest period
     const restMins = Math.floor(exercise.restPeriodSecs / 60);
@@ -117,15 +132,18 @@ function showExercises(exercises, where) {
     // Add event listener to list item
     li.addEventListener('click', function () {
       // Set timer to exercise duration
-      minute = mins;
-      second = secs;
+      minute = totalMins;
+      second = totalSecs;
       // Update timer display
       document.querySelector('#min').textContent = minute < 10 ? '0' + minute : minute;
       document.querySelector('#sec').textContent = second < 10 ? '0' + second : second;
       document.querySelector('#ms').textContent = '00';
 
-      document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ' + exercise.name;
+      document.querySelector('#currentlySelected').textContent = `Currently Selected Exercise: ${exercise.name} (${exercise.reps} reps)`;
+      startBtn.disabled = false;
     });
+
+    currentlySelectedExercise = exercise;
 
     where.append(li);
   }
@@ -195,6 +213,7 @@ function timer() {
     // Stop the timer when it reaches 0
     if (hour === 0 && minute === 0 && second === 0 && ms === 0) {
       timerStatus = false;
+      startBtn.disabled = true;
     } else {
       setTimeout(function () { timer(); }, 10);
     }

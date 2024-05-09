@@ -59,6 +59,31 @@ function postExercise(req, res) {
   );
 }
 
+function postPastExercise(req, res) {
+  const exercise = req.body;
+  db.run('INSERT INTO pastExercises (name, durationSecs, timeRemaining, restPeriodSecs, reps) VALUES (?, ?, ?, ?, ?)',
+    [exercise.name, exercise.durationSecs, exercise.timeRemaining, exercise.restPeriodSecs, exercise.reps],
+    function (err) {
+      if (err) {
+        console.error('Error inserting past exercise:', err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        res.status(201).json({ id: this.lastID, ...exercise });
+      }
+    },
+  );
+}
+
+function getPastExercises(req, res) {
+  db.all('SELECT name, durationSecs, timeRemaining, restPeriodSecs, reps FROM pastExercises', (err, rows) => {
+    if (err) {
+      console.error('Error getting past exercises:', err);
+      res.status(500).send('Internal Server Error');
+    } else {
+      res.json(rows);
+    }
+  });
+}
 
 function clearExercises(req, res) {
   // Clear exercises from the database
@@ -73,7 +98,9 @@ function clearExercises(req, res) {
 }
 
 app.get('/exercises', getExercises);
+app.get('/pastExercises', getPastExercises);
 app.post('/exercises', postExercise);
+app.post('/pastExercises', postPastExercise);
 app.delete('/exercises', clearExercises);
 
 app.get('/', (req, res) => {

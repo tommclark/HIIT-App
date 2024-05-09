@@ -5,14 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Workouts</title>
+
+    <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+    <div class="topnav">
+        <a href="index.html">Home</a>
+        <a href="hiit.html">Exercise</a>
+        <a href="create.html">Create</a>
+        <a class = "active" href="myWorkouts.html">Saved</a>
+
+      </div>
     <h1>My Workouts</h1>
     <a href="hiit.html">Go to HIIT App</a>
-    <!-- Add more links to other pages if needed -->
 
-    
+
+    <section id="myExercises">
+        <h1>Past Exercises</h1>
+        <ul id="pastExerciseList">
+        </ul>
+    </section>
+
+    <script src="myWorkouts.js"></script>
 </body>
 
 </html>

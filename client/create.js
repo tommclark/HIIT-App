@@ -55,21 +55,6 @@ customExerciseForm.addEventListener('submit', function (event) {
   saveExercise(exerciseName);
 });
 
-// Function to populate the dropdown with Exercise options
-// function populateExerciseDropdown() {
-//   const exerciseDropdown = document.querySelector('#exercises');
-
-//   // Clear existing options
-//   exerciseDropdown.innerHTML = '';
-
-//   // Create and append options
-//   exercises.forEach((exercise) => {
-//     const option = document.createElement('option');
-//     option.value = exercise.name;
-//     option.textContent = exercise.name;
-//     exerciseDropdown.appendChild(option);
-//   });
-// }
 
 // Add event listener to the dropdown
 document.querySelector('#exercisesDropdown').addEventListener('change', function () {
@@ -89,8 +74,8 @@ function saveExercise(selectedExercise) {
     },
     body: JSON.stringify({
       name: exercise.name,
-      durationSecs: exercise.durationSecs, // Corrected property name
-      restPeriodSecs: exercise.restPeriodSecs, // Corrected property name
+      durationSecs: exercise.durationSecs,
+      restPeriodSecs: exercise.restPeriodSecs,
       reps: exercise.reps,
       description: exercise.description,
     }),
