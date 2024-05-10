@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import sqlite3 from 'sqlite3';
 
 const app = express();
@@ -127,14 +126,6 @@ app.delete('/exercises', clearExercises);
 app.delete('/pastExercises', clearPastExercises);
 app.delete('/exercises/:name', deleteExercise);
 
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home.html'));
-});
-
-app.get('/create', (req, res) => {
-  res.sendFile(path.join(__dirname, 'create.html'));
-});
 
 app.listen(8080, () => {
   console.log('Server is running on port 8080');

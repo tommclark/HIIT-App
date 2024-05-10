@@ -1,18 +1,24 @@
-# HIIT up2099431 <-- your student number here
+# HIIT up2099431
 ## Key features
 REMOVE ME: Introduce the key features, paying special attention to the non-code ones.  Tell us briefly how to find & use them, and describes the reasons behind the design decisions you made in their implementation.  
 
-My HIIT app allows the user to create an exercise, load it into the timer, start the exercise, pause the exercise, save the workout and export their list of saved exercises as a CSV file. This allows the user to perform their desired workout in an interface that is minimal, clean and easy to use.
+My HIIT app allows the user to create an exercise, load it into the timer, start the exercise, pause the exercise, save the workout and export their list of saved exercises as a CSV file. This allows the user to perform their desired workout in an interface that is minimal, clean and easy to use. I wanted to make the timer and its functionality simple, but also filling all needed functionality. Separating the pages into html files and having their own js file made the structure of my code clearer and helped with debugging. I used an SQLite database to store my exercise data, as it allos for easy storage and retrieval of data- in this case I create an Exercise object which I used to add properties to each individual exercise, and save the properties to their corresponding columns in the database table.
+
+The SQLite database is initialised in svr.js. When the program is run for the first time, it checks if there is already a database called 'exercises.db'. If this is the case, then it will not create a duplicate database. Otherwise, a new database is created. This is done using db.serialize. 
+
+To run this app use the terminal to input 
+```npm start```
+This will start the server, allowing you to visit the app page on your localhost at port 8080. This is 127.0.0.1:8080, or localhost:8080.
 
 ### Creating an exercise
 To create an exercise, use the navigation bar at the top of the screen to select the 'Create' page. From this screen, the user is presented with 2 options. Create an exercise from a preset list in the dropdown menu (Burpees, Push-ups or Plank) or create your own custom exercise. To select a preset exercise, simply click to open the dropdown menu and select one of the options. The selected exercise will be automatically loaded into the database table 'exercises', and displayed on the screen for the user to see.
 
-To create a custom exercise, enter the exercise name, duration in minutes and seconds, rest period in minutes and seconds, number of reps and a description. If not all these fields are filled, the exercise will not be created. To finalise the creation, press the 'Create Exercise' button below, and it will be loaded onto the screen and into the database following the same process as preset events.
+To create a custom exercise, enter the exercise name, duration in minutes and seconds, rest period in minutes and seconds, number of reps and a description. If not all these fields are filled, the exercise will not be created. To finalise the creation, press the 'Create Exercise' button below, and it will be loaded onto the screen and into the database following the same process as preset events. I chose to have some preset exercise in case users do not want to create their own exercise from scratch for reasons such as being in a rush or simply just convenience. The properties of the preser exercises could be displayed better, which is a change that could be made in the future.
 
 ### Loading an exercise 
-Once an exercise has been created, it is now possible to select it and load it into the timer. Going to the 'Exercise' screen will display the created exercise(s), along with a timer and text that tells the user to select an exercise. By left clicking on one of the exercises, it will turn green to indicate that it has been selected. The duration of the exercise is then fetched and loaded into the timer- for example, after creating a 'Plank' exercise, which by default has a duration of 1 minute and 30 seconds, 1 minute and 30 seconds will apear in the correct fields of the timer. The name of the exercise appears at the top along with the number of reps completed and the total reps, and the start/pause button is enabled. 
+Once an exercise has been created, it is now possible to select it and load it into the timer. Going to the 'Exercise' screen will display the created exercise(s), along with a timer and text that tells the user to select an exercise. By left clicking on one of the exercises, it will turn green to indicate that it has been selected. The duration of the exercise is then fetched and loaded into the timer- for example, after creating a 'Plank' exercise, which by default has a duration of 1 minute and 30 seconds, 1 minute and 30 seconds will apear in the correct fields of the timer. The name of the exercise appears at the top along with the number of reps completed and the total reps, and the start/pause button is enabled. These features meet all the requirements and allow a user to perform a HIIT workout with ease.
 
-The clear button will clear all created exercise from the database and remove them from displaying on screen. Each exercise also has a delete button, where the user can click the button to delete the individual exercise.
+The clear button will clear all created exercise from the database and remove them from displaying on screen. Each exercise also has a delete button, where the user can click the button to delete the individual exercise. I felt it was important to have a clear button to quickly remove all of the exercises to make the app more efficient and user friendly.
 
 ### Performing an exercise
 Once an exercise has been created, simply click/press the green start button that has now been enabled. The timer will start counting down to 0, and a progress bar will gradually fill up. The user can pause the exercise at any time, except during rest periods. Pressing the reset button at any time when there is a loaded exercise will clear any exercises from being loaded. The selected exercise will no longer be highlighted, indicating to the user that they now have no exercise selected.
@@ -25,11 +31,10 @@ Another thing the user can do at any point is to save their currently loaded exe
 When a user saves an exercise, it is saved to the pastExercises table as previously mentioned. To see these exercise, navigate to the 'Saved' page. Here, all of the user's saved exercise will be displayed. Here, there are 2 options- clear workouts does as expected and clears all saved workouts from the database and the page, and export workouts saves the list of exercises as a CSV file, which is then downloaded automatically to the browser. This can be used to share exercises or simply save them externally. Currently, there is no ability to load exercises back into the app from this CSV file due to time constraints, but this is something that could be implemented in the future. Additionally, a good feature for the future would be to load one of these saved in-progress exercises back into the timer to resume.
 
 ### Navigation bar
-The navigation bar is always present at the top of the screen. When the user clicks on one of the options, it is highlighted to provide feedback that this is the currently selected page.
+The navigation bar is always present at the top of the screen. When the user clicks on one of the options, it is highlighted to provide feedback that this is the currently selected page. It is essential to have this navigation bar as without it, it is impossible to go to the different pages and use the app. With the navigation bar, the different pages come together seamlessly to create a functional app.
 
 
 ## AI
-REMOVE ME: Detail your use of AI, listing of the prompts you used, and whether the results formed or inspired part of your final submission and where we can see this (and if not, why not?). You may wish to group prompts into headings/sections - use markdown in any way that it helps you communicate your use of AI. 
 
 ### Prompt to develop save button logic
 A sequence of prompts helped me develop this feature:
@@ -73,3 +78,12 @@ Next, I had to change and add some methods in my code to save the exercise to th
 This prompt was useful as it changed the saveExercise function to use the /pastExercises endpoint, and created fields that matched the columns.
 
 Also, whenever I used AI to help with sending/retrieving from the database, they used .then instead of await. I prefer to use await as this is what I learnt in class and was more familliar with it- as stated before, coding and implementing servers was not my strong point, so I asked AI for help when I needed it. This meant that I had to go through the response and change it to a try/catch block, which uses await to fetch data.
+
+
+## Other notes
+
+Initially, I planned to develop my app as a SPA (Single Page Application). I was going to use the example Matt demo'd in class to help me structure my code with inc files, etc. However, I found it to be too confusing so instead I used multiple html files to create all my pages. I had to create a separate nav bar and implement it in each file which may not be the most efficient way of doing this.
+
+It also took me a while to understand how to configure the database, I spent time looking at the SQLite documentation and websites. Eventually, I figured out how to initialise it using serialise and db.run. I installed some extensions for VSCode which allowed me to view the contents of these databases, which made debugging much easier, particularly when I was receiving NaN and undefined errors as above.
+
+Since the prototype, this app has been greatly improved. At the prototype submission, the only functionality was a simple timer, and the ability to create an exercise with a name and the time currently displayed on the timer. Almost all functionality has been added since then, with the timer and exercises no longer dependent on each other. The ability to save exercises to an exertal SQLite database was added, along with data retrieval and formatting. CSS was also added to make the web app look nicer. Buttons are kept separate from text to make sure people can tell the difference between them.

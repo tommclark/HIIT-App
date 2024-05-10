@@ -3,11 +3,11 @@ h1 {
 }
 
 body {
-    background-color: #f9f9f9; 
+    background-color: #f9f9f9;
 }
 
 #exercises {
-    margin-left: 1em ;
+    margin-left: 1em;
 }
 
 .exercisepopup {
@@ -19,7 +19,7 @@ body {
     border-radius: 5px;
     padding: 20px;
     background-color: #f9f9f9;
-    
+
 }
 
 .digit {
@@ -52,9 +52,9 @@ button:disabled {
 .navbar {
     background-color: #333;
     overflow: auto;
-  }
+}
 
-  /* a targets all a elements in the class (links in the navbar) */
+/* a targets all a elements in the class (links in the navbar) */
 .navbar a {
     float: left;
     color: #f2f2f2;
@@ -63,32 +63,32 @@ button:disabled {
     text-decoration: none;
     font-size: 17px;
 }
-  
-  .navbar a:hover {
+
+.navbar a:hover {
     background-color: #ddd;
     color: black;
-  }
-  
+}
 
-  .navbar a.active {
+
+.navbar a.active {
     background-color: #04aa6d;
     color: white;
-  }
+}
 
 
-  #progressBarContainer {
+#progressBarContainer {
     width: 100%;
     background-color: #f3f3f3;
-  }
-  
-  #progressBar {
+}
+
+#progressBar {
     width: 0%;
     height: 20px;
     background-color: #4CAF50;
     transition: width 1s linear;
-  }
+}
 
-  #exerciselist li {
+#exerciselist li {
     list-style: none;
     margin-bottom: 20px;
     padding: 20px;
@@ -97,42 +97,38 @@ button:disabled {
     cursor: pointer;
     background-color: #f9f9f9;
     transition: background-color 0.3s ease;
-  }
-  
-  #exerciselist li:hover {
+}
+
+#exerciselist li:hover {
     background-color: #f0f0f0;
-  }
-  
-  /* Style for exercise name */
-  #exerciselist li h3 {
+}
+
+#exerciselist li h3 {
     margin: 0 0 10px;
     font-size: 18px;
-  }
-  
-  /* Style for exercise details */
-  #exerciselist li p {
+}
+
+#exerciselist li p {
     margin: 0;
     font-size: 14px;
     color: #666;
-  }
-  
-  /* Style for exercise description */
+}
 
 
-  .exercise-card {
+.exercise-card {
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
     cursor: pointer;
-  }
-  
-  .exercise-card:hover {
+}
+
+.exercise-card:hover {
     background-color: #e5e5e5;
-  }
-  
+}
 
 
-  #myExercises li {
+
+#myExercises li {
     list-style: none;
     margin-bottom: 20px;
     padding: 20px;
@@ -141,28 +137,25 @@ button:disabled {
     cursor: pointer;
     background-color: #f9f9f9;
     transition: background-color 0.3s ease;
-  }
-  
-  #myExercises li:hover {
+}
+
+#myExercises li:hover {
     background-color: #f0f0f0;
-  }
-  
-  /* Style for exercise name */
-  #myExercises li h3 {
+}
+
+#myExercises li h3 {
     margin: 0 0 10px;
     font-size: 18px;
-  }
-  
-  /* Style for exercise details */
-  #myExercises li p {
+}
+
+#myExercises li p {
     margin: 0;
     font-size: 14px;
     color: #666;
-  }
+}
 
 
-
-  #customExerciseForm {
+#customExerciseForm {
     width: 50%;
     max-width: 600px;
     padding: 0px;
@@ -183,7 +176,8 @@ button:disabled {
     border: 2px solid #ddd;
     border-radius: 3px;
 }
-#exercisesDropdown  {
+
+#exercisesDropdown {
     display: flex;
     padding: 10px;
     margin-bottom: 20px;
@@ -216,7 +210,7 @@ button:disabled {
     border-radius: 3px;
 }
 
-#exercisesDropdown  {
+#exercisesDropdown {
     display: flex;
     padding: 10px;
     margin-bottom: 20px;
@@ -243,6 +237,3 @@ button:disabled {
 .deleteButton:hover {
     background-color: #da190b;
 }
-
-
-
