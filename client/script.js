@@ -3,6 +3,7 @@ const saveBtn = document.querySelector('#save');
 const resetBtn = document.querySelector('#reset');
 const clearBtn = document.querySelector('#clear');
 
+saveBtn.disabled = true;
 
 const exerciseList = document.querySelector('#exerciselist');
 
@@ -60,6 +61,7 @@ resetBtn.addEventListener('click', function () {
     previousSelectedExercise.style.backgroundColor = '#f9f9f9';
   }
   currentlySelectedExercise = null;
+  saveBtn.disabled = true;
   document.querySelector('#progressBar').style.width = '0%';
 });
 
@@ -81,6 +83,7 @@ clearBtn.addEventListener('click', async function clearExercises() {
     console.log('failed to clear exercises', response);
   }
   document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ';
+  saveBtn.disabled = true;
 });
 
 
@@ -168,6 +171,7 @@ function showExercises(exercises, where) {
 
       document.querySelector('#currentlySelected').textContent = `Currently Selected Exercise: ${exercise.name} (${repsDone}/${exercise.reps} reps)`;
       startBtn.disabled = false;
+      saveBtn.disabled = false;
 
       li.style.backgroundColor = '#A5E3A4'; // Set new background color
     });
