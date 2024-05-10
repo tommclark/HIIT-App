@@ -9,6 +9,8 @@ To run this app use the terminal to input
 ```npm start```
 This will start the server, allowing you to visit the app page on your localhost at port 8080. This is 127.0.0.1:8080, or localhost:8080.
 
+Before running ```npm install```, ensure you are in the correct directory. You may need to run ```cd HIIT-App``` to do this, then run npm install again.
+
 ### Creating an exercise
 To create an exercise, use the navigation bar at the top of the screen to select the 'Create' page. From this screen, the user is presented with 2 options. Create an exercise from a preset list in the dropdown menu (Burpees, Push-ups or Plank) or create your own custom exercise. To select a preset exercise, simply click to open the dropdown menu and select one of the options. The selected exercise will be automatically loaded into the database table 'exercises', and displayed on the screen for the user to see.
 
