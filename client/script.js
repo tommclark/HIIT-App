@@ -1,23 +1,21 @@
-// let currentlySelectedExercise = document.querySelector("#currentlySelected");
-
 const startBtn = document.querySelector('#start');
 const saveBtn = document.querySelector('#save');
 const resetBtn = document.querySelector('#reset');
 const clearBtn = document.querySelector('#clear');
-const addBtn = document.querySelector('#add');
 
-const exerciseInput = document.querySelector('.exercisepopup');
 
 const exerciseList = document.querySelector('#exerciselist');
 
 let totalExerciseSecs;
 let totalRestSecs;
 
-// When the exercise starts
+let previousSelectedExercise;
+
+// Progress bar before exercise started
 document.querySelector('#progressBar').style.width = '100%';
 document.querySelector('#progressBar').style.transitionDuration = totalExerciseSecs + 's';
 
-// When the rest period starts
+// Progress bar when rest period starts
 document.querySelector('#progressBar').style.width = '0%';
 document.querySelector('#progressBar').style.transitionDuration = totalRestSecs + 's';
 
@@ -25,9 +23,9 @@ let exercises = [];
 let currentlySelectedExercise;
 let timerStatus = false;
 
+
 let repsDone = 0;
 
-// let hour = 0o0;
 let minute = 0o0;
 let second = 0o0;
 let ms = 0o0;
@@ -46,18 +44,18 @@ startBtn.addEventListener('click', function () {
 
 resetBtn.addEventListener('click', function () {
   timerStatus = false;
-  // hour = 0;
   minute = 0;
   second = 0;
   ms = 0;
 
-  // document.querySelector('#hr').textContent = '00';
   document.querySelector('#min').textContent = '00';
   document.querySelector('#sec').textContent = '00';
   document.querySelector('#ms').textContent = '00';
 
   startBtn.disabled = true;
   document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ';
+
+  document.querySelector('#progressBar').style.width = '0%';
 });
 
 
@@ -82,10 +80,6 @@ clearBtn.addEventListener('click', async function clearExercises() {
 
 
 saveBtn.addEventListener('click', saveExercise);
-
-addBtn.addEventListener('click', function () {
-  exerciseInput.style.display = 'block';
-});
 
 
 async function saveExercise() {
@@ -130,25 +124,38 @@ function showExercises(exercises, where) {
     const totalMins = Math.floor(totalDurationSecs / 60);
     const totalSecs = totalDurationSecs % 60;
 
-    // Calculate minutes and seconds for rest period
+
     const restMins = Math.floor(exercise.restPeriodSecs / 60);
     const restSecs = exercise.restPeriodSecs % 60;
 
     li.textContent = exercise.name + ': ' + mins + ' minute(s) ' + secs + ' seconds, ' + restMins + ' minute(s) ' + restSecs + ' seconds rest, ' + exercise.reps + ' reps. ' + exercise.description;
 
-    // Add event listener to list item
+
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('deleteButton');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', function (event) {
+      event.stopPropagation();
+      deleteExercise(exercise.name, li);
+    });
+    li.appendChild(deleteButton);
+
     li.addEventListener('click', function () {
       // Set timer to exercise duration
       repsDone = 0;
       minute = totalMins;
       second = totalSecs;
-
-      // Update timer display
+      // Update timer
       document.querySelector('#min').textContent = minute < 10 ? '0' + minute : minute;
       document.querySelector('#sec').textContent = second < 10 ? '0' + second : second;
       document.querySelector('#ms').textContent = '00';
 
-      // Update currentlySelectedExercise
+      // Selected exercise changes colour
+
+      if (previousSelectedExercise) {
+        previousSelectedExercise.style.backgroundColor = ''; // Reset previous background color
+      }
+      previousSelectedExercise = li;
       currentlySelectedExercise = exercise;
 
       totalExerciseSecs = currentlySelectedExercise.durationSecs;
@@ -156,9 +163,29 @@ function showExercises(exercises, where) {
 
       document.querySelector('#currentlySelected').textContent = `Currently Selected Exercise: ${exercise.name} (${repsDone}/${exercise.reps} reps)`;
       startBtn.disabled = false;
+
+      li.style.backgroundColor = '#A5E3A4'; // Set new background color
     });
 
     where.append(li);
+  }
+}
+
+async function deleteExercise(exerciseName, liElement) {
+  try {
+    const response = await fetch(`/exercises/${exerciseName}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    console.log('Exercise deleted successfully');
+
+    liElement.remove();
+  } catch (error) {
+    console.error('There was a problem with your fetch operation:', error);
   }
 }
 
@@ -195,7 +222,7 @@ function timer() {
       second = 59;
     }
 
-    // Update timer display
+    // Update timer
     const minString = minute < 10 ? '0' + minute : minute;
     const secString = second < 10 ? '0' + second : second;
     const msString = ms < 10 ? '0' + ms : ms;
@@ -204,11 +231,12 @@ function timer() {
     document.querySelector('#sec').textContent = secString;
     document.querySelector('#ms').textContent = msString;
 
-    // Calculate progress bar width based on total exercise duration
+    document.querySelector('#restMessage').textContent = 'Go!';
+
     const exerciseProgress = (totalExerciseSecs - (minute * 60 + second)) / totalExerciseSecs * 100;
     document.querySelector('#progressBar').style.width = exerciseProgress + '%';
 
-    // Stop the timer when it reaches 0
+    // Stop timer when it reaches 0
     if (minute === 0 && second === 0 && ms === 0) {
       repsDone += 1;
       console.log(repsDone);
@@ -217,15 +245,18 @@ function timer() {
 
       timerStatus = false;
       startBtn.disabled = true;
+
+      // Stop the timer when all reps have been completed
       if (repsDone === currentlySelectedExercise.reps) {
-        // Stop the timer when repsDone equals the selected exercise's reps
         timerStatus = false;
         startBtn.disabled = true;
         console.log('exercise completed');
         repsDone = 0;
-        return; // Exit the function to prevent further actions
+        document.querySelector('#currentlySelected').textContent = 'Exercise completed. Select another exercise.';
+        document.querySelector('#restMessage').textContent = 'Good job!';
+        previousSelectedExercise.style.backgroundColor = '#5FAD3D';
+        return;
       }
-      // Load rest time
       const restMins = Math.floor(currentlySelectedExercise.restPeriodSecs / 60);
       const restSecs = currentlySelectedExercise.restPeriodSecs % 60;
 
@@ -238,7 +269,8 @@ function timer() {
       document.querySelector('#sec').textContent = restSecs < 10 ? '0' + restSecs : restSecs;
       document.querySelector('#ms').textContent = '00';
 
-      // Start rest timer immediately
+      document.querySelector('#restMessage').textContent = 'Resting...';
+
       restTimer();
     } else {
       setTimeout(function () { timer(); }, 10);
@@ -264,27 +296,25 @@ function restTimer() {
     second = 59;
   }
 
-  // Update timer display
+  // Update timer
   document.querySelector('#min').textContent = minute < 10 ? '0' + minute : minute;
   document.querySelector('#sec').textContent = second < 10 ? '0' + second : second;
 
-  // Calculate progress bar width based on total rest duration
   const restProgress = (totalRestSecs - (minute * 60 + second)) / totalRestSecs * 100;
   document.querySelector('#progressBar').style.width = (100 - restProgress) + '%';
 
   // Stop rest timer when it reaches 0
   if (minute === 0 && second === 0 && ms === 0) {
-    // Reset timer to exercise duration
+    // Reset timer to exercise duration instead of rest
     minute = Math.floor(currentlySelectedExercise.durationSecs / 60);
     second = currentlySelectedExercise.durationSecs % 60;
     ms = 0;
-
-    // Update timer display with exercise duration
     document.querySelector('#min').textContent = minute < 10 ? '0' + minute : minute;
     document.querySelector('#sec').textContent = second < 10 ? '0' + second : second;
     document.querySelector('#ms').textContent = '00';
 
-    // Start timer immediately
+    document.querySelector('#restMessage').textContent = 'Go!';
+
     timerStatus = true;
     timer();
   } else {

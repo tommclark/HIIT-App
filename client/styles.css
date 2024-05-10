@@ -2,9 +2,8 @@ h1 {
     font-size: 2em;
 }
 
-.top {
-    display: flex;
-    flex-wrap: wrap;
+body {
+    background-color: #f9f9f9; 
 }
 
 #exercises {
@@ -13,6 +12,40 @@ h1 {
 
 .exercisepopup {
     display: none;
+}
+
+#stopwatch {
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    
+}
+
+.digit {
+    font-size: 3em;
+    text-align: center;
+}
+
+button {
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #3e8e41;
+}
+
+button:disabled {
+    background-color: #cccccc;
 }
 
 
@@ -38,7 +71,7 @@ h1 {
   
 
   .navbar a.active {
-    background-color: #04AA6D;
+    background-color: #04aa6d;
     color: white;
   }
 
@@ -54,3 +87,162 @@ h1 {
     background-color: #4CAF50;
     transition: width 1s linear;
   }
+
+  #exerciselist li {
+    list-style: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+  }
+  
+  #exerciselist li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Style for exercise name */
+  #exerciselist li h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+  }
+  
+  /* Style for exercise details */
+  #exerciselist li p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Style for exercise description */
+
+
+  .exercise-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  .exercise-card:hover {
+    background-color: #e5e5e5;
+  }
+  
+
+
+  #myExercises li {
+    list-style: none;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+  }
+  
+  #myExercises li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Style for exercise name */
+  #myExercises li h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+  }
+  
+  /* Style for exercise details */
+  #myExercises li p {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+
+
+
+  #customExerciseForm {
+    width: 50%;
+    max-width: 600px;
+    padding: 0px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+#customExerciseForm label {
+    display: flex;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#customExerciseForm input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+}
+#exercisesDropdown  {
+    display: flex;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    font-size: 16px;
+    color: #666;
+}
+
+
+#exerciseForm {
+    width: 50%;
+    max-width: 600px;
+    padding: 0px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+#exerciseForm label {
+    display: flex;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+#exerciseForm input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+}
+
+#exercisesDropdown  {
+    display: flex;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 3px;
+    font-size: 16px;
+    color: #666;
+}
+
+.deleteButton {
+    display: block;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.deleteButton:hover {
+    background-color: #da190b;
+}
+
+
+

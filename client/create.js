@@ -9,7 +9,6 @@ class Exercise {
 }
 
 
-// Create Exercise objects
 const exercises = [
   new Exercise('Burpees', 90, 20, 5, 'A squat thrust with an additional stand between repetitions'),
   new Exercise('Push-ups', 90, 20, 5, 'A common calisthenics exercise performed in a prone position by raising and lowering the body using the arms'),
@@ -39,7 +38,6 @@ customExerciseForm.addEventListener('submit', function (event) {
   const exerciseReps = parseInt(exerciseRepsInput.value);
   const exerciseDescription = exerciseDescriptionInput.value;
 
-  // Create a new Exercise object
   const newExercise = new Exercise(
     exerciseName,
     exerciseDurationMinutes * 60 + exerciseDurationSeconds,
@@ -48,64 +46,54 @@ customExerciseForm.addEventListener('submit', function (event) {
     exerciseDescription,
   );
 
-  // Add the new exercise to the exercises array
   exercises.push(newExercise);
 
-  // Save the new exercise
   saveExercise(exerciseName);
 });
 
 
-// Add event listener to the dropdown
 document.querySelector('#exercisesDropdown').addEventListener('change', function () {
   const selectedExercise = this.value;
   saveExercise(selectedExercise);
 });
 
-// Function to save the selected exercise
-function saveExercise(selectedExercise) {
-  // Find the selected exercise object from the array
+
+async function saveExercise(selectedExercise) {
   const exercise = exercises.find(exercise => exercise.name === selectedExercise);
 
-  fetch('/exercises', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: exercise.name,
-      durationSecs: exercise.durationSecs,
-      restPeriodSecs: exercise.restPeriodSecs,
-      reps: exercise.reps,
-      description: exercise.description,
-    }),
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Handle successful response if needed
-      console.log('Exercise saved:', data);
-      populateExerciseList(); // Update the list of exercises after saving
-    })
-    .catch(error => {
-      // Handle error
-      console.error('There was a problem with your fetch operation:', error);
+  try {
+    const response = await fetch('/exercises', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: exercise.name,
+        durationSecs: exercise.durationSecs,
+        restPeriodSecs: exercise.restPeriodSecs,
+        reps: exercise.reps,
+        description: exercise.description,
+      }),
     });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    console.log('Exercise saved:', data);
+    populateExerciseList();
+  } catch (error) {
+    console.error('There was a problem with your fetch operation:', error);
+  }
 }
 
 
-// Function to populate the dropdown with Exercise options
 function populateExerciseDropdown() {
   const exerciseDropdown = document.querySelector('#exercisesDropdown');
 
-  // Clear existing options
   exerciseDropdown.innerHTML = '';
 
-  // Create and append options
   exercises.forEach((exercise) => {
     const option = document.createElement('option');
     option.value = exercise.name;
@@ -115,37 +103,31 @@ function populateExerciseDropdown() {
 }
 
 
-// Function to populate the exercise list
-function populateExerciseList() {
-  fetch('/exercises')
-    .then(response => response.json())
-    .then(data => {
-      const exerciseList = document.querySelector('#exerciseList');
-      exerciseList.innerHTML = ''; // Clear previous list items
-      data.forEach(exercise => {
-        console.log(exercise);
-        const listItem = document.createElement('li');
+async function populateExerciseList() {
+  try {
+    const response = await fetch('/exercises');
+    const data = await response.json();
 
-        console.log(exercise.durationSecs);
-        // Calculate minutes and seconds for duration
-        const mins = Math.floor(exercise.durationSecs / 60);
-        const secs = exercise.durationSecs % 60;
+    const exerciseList = document.querySelector('#exerciseList');
+    exerciseList.innerHTML = '';
+    data.forEach(exercise => {
+      const listItem = document.createElement('li');
 
+      const mins = Math.floor(exercise.durationSecs / 60);
+      const secs = exercise.durationSecs % 60;
 
-        // // Calculate minutes and seconds for rest period
-        const restMins = Math.floor(exercise.restPeriodSecs / 60);
-        const restSecs = exercise.restPeriodSecs % 60;
+      const restMins = Math.floor(exercise.restPeriodSecs / 60);
+      const restSecs = exercise.restPeriodSecs % 60;
 
-        // Display the exercise details in the list item
-        listItem.textContent = exercise.name + ': ' + mins + ' minute(s) ' + secs + ' seconds, ' + restMins + ' minute(s) ' + restSecs + ' seconds rest, ' + exercise.reps + ' reps. ' + exercise.description;
-        exerciseList.appendChild(listItem);
-      });
-    })
-    .catch(error => console.error('Error fetching exercises:', error));
+      listItem.textContent = exercise.name + ': ' + mins + ' minute(s) ' + secs + ' seconds, ' + restMins + ' minute(s) ' + restSecs + ' seconds rest, ' + exercise.reps + ' reps. ' + exercise.description;
+      exerciseList.appendChild(listItem);
+    });
+  } catch (error) {
+    console.error('Error fetching exercises:', error);
+  }
 }
 
-// Call the function to populate the dropdown on page load
 window.addEventListener('load', () => {
   populateExerciseDropdown();
-  populateExerciseList(); // Call this function to populate the exercise list as well
+  populateExerciseList();
 });
