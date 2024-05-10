@@ -45,3 +45,34 @@ document.getElementById('clearWorkouts').addEventListener('click', async functio
     console.error('Error:', error);
   }
 });
+
+document.getElementById('exportWorkouts').addEventListener('click', async function () {
+  try {
+    const response = await fetch('/pastExercises');
+    const data = await response.json();
+    downloadWorkoutsAsCSV(data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+function downloadWorkoutsAsCSV(exercises) {
+  // Create CSV content
+  let csvContent = 'Exercise Name,Duration (Seconds),Time Remaining (Seconds),Rest Period (Seconds),Reps\n';
+  exercises.forEach(exercise => {
+    csvContent += `${exercise.name},${exercise.durationSecs},${exercise.timeRemaining},${exercise.restPeriodSecs},${exercise.reps}\n`;
+  });
+
+  // Create a blob (file type) containing the csv data
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+  // Creates a hidden link which automatically starts the download
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', 'my_workouts.csv');
+  link.style.visibility = 'hidden';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
