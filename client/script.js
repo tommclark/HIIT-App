@@ -38,6 +38,7 @@ startBtn.addEventListener('click', function () {
     timerStatus = false;
   } else {
     timerStatus = true;
+    startBtn.disabled = false;
     timer();
   }
 });
@@ -314,8 +315,8 @@ function restTimer() {
     document.querySelector('#ms').textContent = '00';
 
     document.querySelector('#restMessage').textContent = 'Go!';
-
     timerStatus = true;
+    startBtn.disabled = false; // Disable the start button during rest
     timer();
   } else {
     setTimeout(function () { restTimer(); }, 10);
