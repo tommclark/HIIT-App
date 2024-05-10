@@ -55,7 +55,11 @@ resetBtn.addEventListener('click', function () {
 
   startBtn.disabled = true;
   document.querySelector('#currentlySelected').textContent = 'Currently Selected Exercise: ';
-
+  // When the reset button is clicked, the selected event is no longer highlighted
+  if (previousSelectedExercise) {
+    previousSelectedExercise.style.backgroundColor = '#f9f9f9';
+  }
+  currentlySelectedExercise = null;
   document.querySelector('#progressBar').style.width = '0%';
 });
 

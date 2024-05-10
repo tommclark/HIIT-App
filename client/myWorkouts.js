@@ -1,5 +1,4 @@
 let exercises = [];
-
 window.onload = async function () {
   try {
     await loadExercises();
@@ -31,6 +30,7 @@ function displayExercises(exercises) {
     exerciseList.appendChild(li);
   });
 }
+
 
 document.getElementById('clearWorkouts').addEventListener('click', async function () {
   try {
