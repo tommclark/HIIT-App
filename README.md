@@ -1,6 +1,5 @@
 # HIIT up2099431
-## Key features
-REMOVE ME: Introduce the key features, paying special attention to the non-code ones.  Tell us briefly how to find & use them, and describes the reasons behind the design decisions you made in their implementation.  
+## Key features  
 
 My HIIT app allows the user to create an exercise, load it into the timer, start the exercise, pause the exercise, save the workout and export their list of saved exercises as a CSV file. This allows the user to perform their desired workout in an interface that is minimal, clean and easy to use. I wanted to make the timer and its functionality simple, but also filling all needed functionality. Separating the pages into html files and having their own js file made the structure of my code clearer and helped with debugging. I used an SQLite database to store my exercise data, as it allos for easy storage and retrieval of data- in this case I create an Exercise object which I used to add properties to each individual exercise, and save the properties to their corresponding columns in the database table.
 
